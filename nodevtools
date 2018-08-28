@@ -1,0 +1,17 @@
+#!/usr/bin/osascript
+set debugUrl to "chrome://inspect"
+set js to "document.getElementById('node-frontend').click();"
+
+tell application "Google Chrome"
+	if windows = {} then
+		make new window
+		set URL of (active tab of window 1) to debugUrl
+	else
+		make new tab at the end of window 1 with properties {URL:debugUrl}
+	end if
+	delay 0.5
+	set lastWindow to front window
+	execute front window's active tab javascript js
+	tell lastWindow to close active tab
+	activate
+end tell
